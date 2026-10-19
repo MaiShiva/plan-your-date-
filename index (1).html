@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0f5">
+  <meta name="description" content="A little romantic date invitation made with love.">
+  <title>A Little Date With You 💗</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js" defer></script>
+</head>
+<body>
+
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+
+  <main class="card">
+    <div class="top-heart">💌</div>
+    <p class="eyebrow">A LITTLE QUESTION FOR YOU</p>
+
+    <section id="welcome">
+      <div class="sticker">🥹💗</div>
+      <h1>Hey Beautiful!</h1>
+      <p class="subtitle">
+        I have a tiny question for you...
+      </p>
+      <h2>Will you go on a date with me? 🌷</h2>
+
+      <div class="buttons" id="buttons">
+        <button id="yesBtn" class="btn yes" type="button">
+          Yes, of course! 💖
+        </button>
+        <button id="noBtn" class="btn no" type="button">
+          No 🙈
+        </button>
+      </div>
+
+      <p class="tiny">Choose wisely, cutie! 🫶</p>
+    </section>
+
+    <section id="planner" hidden>
+      <div class="sticker">🌹</div>
+      <h1>It's a date!</h1>
+      <p class="subtitle">
+        Let's plan our little adventure together.
+      </p>
+
+      <form id="dateForm">
+        <label for="girlName">What should I call you? 💕</label>
+        <input
+          id="girlName"
+          name="girlName"
+          type="text"
+          placeholder="Your lovely name"
+          maxlength="60"
+          autocomplete="given-name"
+          required
+        >
+
+        <label for="date">Which day works for you? 📅</label>
+        <input id="date" name="date" type="date" required>
+
+        <label for="place">Where shall we go? 📍</label>
+        <input
+          id="place"
+          name="place"
+          type="text"
+          placeholder="A cute cafe, park, or somewhere else..."
+          maxlength="160"
+          required
+        >
+
+        <label for="time">What time suits you? ⏰</label>
+        <input id="time" name="time" type="time" required>
+
+        <label for="message">A little note (optional) 💌</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="3"
+          maxlength="250"
+          placeholder="Anything you'd like me to know..."
+        ></textarea>
+
+        <button class="btn yes confirm" type="submit">
+          Make Our Date Plan 💞
+        </button>
+      </form>
+    </section>
+
+    <section id="success" hidden aria-live="polite">
+      <div class="sticker celebration">🥰</div>
+      <h1 id="successTitle">Yay! 💗</h1>
+      <p class="subtitle">
+        A little plan, a lovely memory waiting to happen.
+      </p>
+
+      <div class="summary">
+        <p>💖 <strong>Name:</strong> <span id="outName"></span></p>
+        <p>📅 <strong>Date:</strong> <span id="outDate"></span></p>
+        <p>📍 <strong>Place:</strong> <span id="outPlace"></span></p>
+        <p>⏰ <strong>Time:</strong> <span id="outTime"></span></p>
+        <p id="noteRow" hidden>💌 <strong>Note:</strong> <span id="outNote"></span></p>
+      </div>
+
+      <button class="btn yes" id="shareBtn" type="button">
+        Share Our Plan 💌
+      </button>
+      <button class="btn secondary" id="editBtn" type="button">
+        Edit the details ✨
+      </button>
+
+      <p class="tiny">
+        A plan made with love. Please confirm the details together. 💗
+      </p>
+    </section>
+
+    <p class="footer">made with ♡ just for you</p>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>
