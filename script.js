@@ -43,9 +43,7 @@ function createHeartBurst(count = 18) {
   for (let i = 0; i < count; i++) {
     const heart = document.createElement("span");
     heart.className = "floating-heart";
-    heart.textContent =
-      symbols[Math.floor(Math.random() * symbols.length)];
-
+    heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
     heart.style.left = `${Math.random() * 100}%`;
     heart.style.fontSize = `${14 + Math.random() * 22}px`;
     heart.style.animationDelay = `${Math.random() * 0.8}s`;
@@ -83,18 +81,21 @@ function safeText(value) {
 /* YES BUTTON */
 if (yesButton) {
   yesButton.addEventListener("click", () => {
+    if (!planPanel) {
+      console.error('Element with id="plan-panel" was not found.');
+      return;
+    }
+
     showPanel(planPanel);
     createHeartBurst(24);
 
     const nameInput = $("#person-name");
     if (nameInput) nameInput.focus({ preventScroll: true });
 
-    if (planPanel) {
-      planPanel.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-      });
-    }
+    planPanel.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
   });
 }
 
@@ -203,7 +204,9 @@ function renderPlan(plan) {
 
   if (plan.note) lines.push(`Note: ${plan.note}`);
 
-  if (resultCopy) resultCopy.textContent = lines.join("\n");
+  if (resultCopy) {
+    resultCopy.textContent = lines.join("\n");
+  }
 }
 
 async function sendToGoogleSheets(plan) {
@@ -235,6 +238,7 @@ if (dateForm) {
     event.preventDefault();
 
     if (submitInProgress) return;
+
     clearFormError();
 
     const plan = getPlanFromForm();
@@ -275,6 +279,7 @@ if (dateForm) {
       }
     } catch (error) {
       console.error("Could not send the plan:", error);
+
       showFormError(
         "Couldn't send the plan. Check your connection and try again."
       );
@@ -343,7 +348,9 @@ if (shareButton) {
       `When: ${prettyDate(latestPlan.date)} at ${prettyTime(latestPlan.time)}`,
       `Where: ${latestPlan.place}`,
       latestPlan.note ? `Note: ${latestPlan.note}` : ""
-    ].filter(Boolean).join("\n");
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     try {
       if (navigator.share) {
@@ -352,7 +359,9 @@ if (shareButton) {
           text
         });
 
-        if (shareStatus) shareStatus.textContent = "Share sheet opened.";
+        if (shareStatus) {
+          shareStatus.textContent = "Share sheet opened.";
+        }
         return;
       }
 
@@ -360,7 +369,8 @@ if (shareButton) {
         await navigator.clipboard.writeText(text);
 
         if (shareStatus) {
-          shareStatus.textContent = "Plan copied! Paste it into a message.";
+          shareStatus.textContent =
+            "Plan copied! Paste it into a message.";
         }
         return;
       }
@@ -391,5 +401,5 @@ if (shareButton) {
       }
     }
   });
-        }
+  }
     
