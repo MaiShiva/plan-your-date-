@@ -100,34 +100,54 @@ if (yesButton) {
 }
 
 /* NO BUTTON */
+
+/* NO BUTTON — RUNAWAY ANIMATION */
 if (noButton) {
+  let dodgeCount = 0;
+
+  noButton.style.transition =
+    "transform 0.35s cubic-bezier(.2,.8,.3,1)";
+
   noButton.addEventListener("click", () => {
-    noCount++;
+    dodgeCount++;
 
     const messages = [
-      "No pressure — choose whatever feels right. 💗",
-      "That's okay! No pressure at all. 😊",
-      "You can take your time. Your choice matters. 🌷",
-      "All good — this invitation will stay kind and respectful. 💛"
+      "Arey! Pakad ke dikhao 😂💗",
+      "Nahi pakad paoge! 🙈",
+      "Oho, phir se try karo! 😜",
+      "Bhaag gaya button! 😂💕",
+      "Bas bas, ab Yes daba do Miss.DramaQueen! ❤️"
     ];
 
     if (choiceHint) {
       choiceHint.textContent =
-        messages[Math.min(noCount, messages.length - 1)];
+        messages[(dodgeCount - 1) % messages.length];
     }
 
-    if (noButton.animate) {
-      noButton.animate(
-        [
-          { transform: "scale(1)" },
-          { transform: "scale(.96)" },
-          { transform: "scale(1)" }
-        ],
-        { duration: 220, easing: "ease-out" }
-      );
-    }
+    const moveX = (Math.random() < 0.5 ? -1 : 1) *
+      (45 + Math.random() * 65);
+
+    const moveY = (Math.random() < 0.5 ? -1 : 1) *
+      (15 + Math.random() * 25);
+
+    noButton.style.transform =
+      `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 24 - 12}deg)`;
+
+    noButton.animate(
+      [
+        { scale: "1" },
+        { scale: "1.15" },
+        { scale: "0.9" },
+        { scale: "1" }
+      ],
+      {
+        duration: 400,
+        easing: "ease-out"
+      }
+    );
   });
 }
+
 
 /* BACK BUTTON */
 const backButton = $("#back-button");
