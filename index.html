@@ -1,110 +1,123 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fff7fb">
-  <meta name="description" content="A little page for a very special question.">
-  <title>A Little Question for You 💗</title>
-  <link rel="icon" href="assets/heart.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0f5">
+  <meta name="description" content="A little romantic date invitation made with love.">
+  <title>A Little Date With You 💗</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js" defer></script>
 </head>
 <body>
-  <div class="ambient ambient-one" aria-hidden="true"></div>
-  <div class="ambient ambient-two" aria-hidden="true"></div>
-  <div id="hearts" class="hearts" aria-hidden="true"></div>
 
-  <header class="site-header">
-    <a class="brand" href="#" aria-label="A Little Question home">
-      <span class="brand-heart" aria-hidden="true">♥</span>
-      <span>A Little Question</span>
-    </a>
-    <span class="header-note">made with a little courage</span>
-  </header>
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
 
-  <main class="page-shell">
-    <section class="hero-card" aria-labelledby="hero-title">
-      <div class="eyebrow"><span class="sparkle" aria-hidden="true">✦</span> A tiny moment, just for you</div>
-      <div class="hero-heart" aria-hidden="true">
-        <span class="heart-shape">♥</span>
-        <span class="heart-glint">✦</span>
-      </div>
-      <p class="script-note">Hey, you…</p>
-      <h1 id="hero-title">Can I ask you<br><span>something special?</span></h1>
-      <p class="hero-copy">Life has its little surprises. This one comes with a smile, a bit of courage, and a question I wanted to ask you properly.</p>
+  <main class="card">
+    <div class="top-heart">💌</div>
+    <p class="eyebrow">A LITTLE QUESTION FOR YOU</p>
 
-      <div class="choice-area" id="choice-area">
-        <p class="question-label">Will you go on a date with me?</p>
-        <div class="choice-buttons">
-          <button class="button button-primary" id="yes-button" type="button">
-            <span>Yes, I'd love to!</span><span aria-hidden="true">♡</span>
-          </button>
-          <button class="button button-quiet" id="no-button" type="button">Not today</button>
-        </div>
-        <p class="choice-hint" id="choice-hint" aria-live="polite">No pressure — choose whatever feels right. 💗</p>
+    <section id="welcome">
+      <div class="sticker">🥹💗</div>
+      <h1>Hey Beautiful!</h1>
+      <p class="subtitle">
+        I have a tiny question for you...
+      </p>
+      <h2>Will you go on a date with me? 🌷</h2>
+
+      <div class="buttons" id="buttons">
+        <button id="yesBtn" class="btn yes" type="button">
+          Yes, of course! 💖
+        </button>
+        <button id="noBtn" class="btn no" type="button">
+          No 🙈
+        </button>
       </div>
 
-      <section class="plan-panel" id="plan-panel" hidden aria-labelledby="plan-title">
-        <div class="success-mark" aria-hidden="true">♥</div>
-        <p class="eyebrow">This just made my day</p>
-        <h2 id="plan-title">Okay, it's a date! 💗</h2>
-        <p class="plan-intro">Let's make a little plan together.</p>
-        <form id="date-form" novalidate>
-          <div class="form-grid">
-            <label class="field">
-              <span>Your name <span class="required">*</span></span>
-              <input id="person-name" name="personName" type="text" maxlength="60" autocomplete="name" placeholder="What should I call you?" required>
-            </label>
-            <label class="field">
-              <span>Date <span class="required">*</span></span>
-              <input id="date" name="date" type="date" required>
-            </label>
-            <label class="field">
-              <span>Time <span class="required">*</span></span>
-              <input id="time" name="time" type="time" required>
-            </label>
-            <label class="field">
-              <span>Place <span class="required">*</span></span>
-              <input id="place" name="place" type="text" maxlength="120" placeholder="A café, park, or somewhere nice" required>
-            </label>
-          </div>
-          <label class="field full-field">
-            <span>A little note <span class="optional">(optional)</span></span>
-            <textarea id="note" name="note" maxlength="300" rows="3" placeholder="Anything you'd like me to know…"></textarea>
-          </label>
-          <p class="form-error" id="form-error" role="alert" hidden></p>
-          <div class="form-actions">
-            <button class="button button-primary" id="save-button" type="submit">Save our plan <span aria-hidden="true">♡</span></button>
-            <button class="text-button" id="back-button" type="button">Go back</button>
-          </div>
-          <p class="privacy-note">Your details are only sent to a connected spreadsheet if the site owner has enabled that feature.</p>
-        </form>
-      </section>
-
-      <section class="result-panel" id="result-panel" hidden aria-live="polite" aria-labelledby="result-title">
-        <div class="success-mark" aria-hidden="true">✓</div>
-        <p class="eyebrow">Saved on this page</p>
-        <h2 id="result-title">A plan to remember</h2>
-        <p class="result-copy" id="result-copy"></p>
-        <div class="result-actions">
-          <button class="button button-primary" id="share-button" type="button">Share the plan <span aria-hidden="true">↗</span></button>
-          <button class="button button-quiet" id="edit-button" type="button">Edit details</button>
-          <button class="text-button" id="restart-button" type="button">Start again</button>
-        </div>
-        <p class="share-status" id="share-status" aria-live="polite"></p>
-      </section>
-
-      <div class="footer-sparkles" aria-hidden="true"><span>✦</span><span>♡</span><span>✧</span></div>
+      <p class="tiny">Choose wisely, cutie! 🫶</p>
     </section>
 
-    <footer class="site-footer">
-      <p>Made with care, a little courage, and lots of 💗</p>
-      <p class="footer-small">A simple invitation — always your choice.</p>
-    </footer>
+    <section id="planner" hidden>
+      <div class="sticker">🌹</div>
+      <h1>It's a date!</h1>
+      <p class="subtitle">
+        Let's plan our little adventure together.
+      </p>
+
+      <form id="dateForm">
+        <label for="girlName">What should I call you? 💕</label>
+        <input
+          id="girlName"
+          name="girlName"
+          type="text"
+          placeholder="Your lovely name"
+          maxlength="60"
+          autocomplete="given-name"
+          required
+        >
+
+        <label for="date">Which day works for you? 📅</label>
+        <input id="date" name="date" type="date" required>
+
+        <label for="place">Where shall we go? 📍</label>
+        <input
+          id="place"
+          name="place"
+          type="text"
+          placeholder="A cute cafe, park, or somewhere else..."
+          maxlength="160"
+          required
+        >
+
+        <label for="time">What time suits you? ⏰</label>
+        <input id="time" name="time" type="time" required>
+
+        <label for="message">A little note (optional) 💌</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="3"
+          maxlength="250"
+          placeholder="Anything you'd like me to know..."
+        ></textarea>
+
+        <button class="btn yes confirm" type="submit">
+          Make Our Date Plan 💞
+        </button>
+      </form>
+    </section>
+
+    <section id="success" hidden aria-live="polite">
+      <div class="sticker celebration">🥰</div>
+      <h1 id="successTitle">Yay! 💗</h1>
+      <p class="subtitle">
+        A little plan, a lovely memory waiting to happen.
+      </p>
+
+      <div class="summary">
+        <p>💖 <strong>Name:</strong> <span id="outName"></span></p>
+        <p>📅 <strong>Date:</strong> <span id="outDate"></span></p>
+        <p>📍 <strong>Place:</strong> <span id="outPlace"></span></p>
+        <p>⏰ <strong>Time:</strong> <span id="outTime"></span></p>
+        <p id="noteRow" hidden>💌 <strong>Note:</strong> <span id="outNote"></span></p>
+      </div>
+
+      <button class="btn yes" id="shareBtn" type="button">
+        Share Our Plan 💌
+      </button>
+      <button class="btn secondary" id="editBtn" type="button">
+        Edit the details ✨
+      </button>
+
+      <p class="tiny">
+        A plan made with love. Please confirm the details together. 💗
+      </p>
+    </section>
+
+    <p class="footer">made with ♡ just for you</p>
   </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 </body>
 </html>
