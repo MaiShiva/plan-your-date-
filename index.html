@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff7f8"><title>Plan Your Date ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><script src="script.js" defer></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="#">♡ datenight</a><span>● A little moment for us</span></header>
+<main>
+<section class="panel hero" id="welcome">
+<div class="copy"><p class="eyebrow">✦ YOUR INVITATION AWAITS</p><h1>Life is better<br>when it's <em>you &amp; me.</em></h1>
+<p class="intro">No big plans. No pressure. Just good vibes, a little adventure, and some time together.</p>
+<div class="question"><span>♡</span><div><b>So, what do you say?</b><small>Will you go on a date with me?</small></div></div>
+<div class="buttons" id="button-area"><button class="primary" id="yes">Yes, let's go ♡</button><button class="secondary" id="no">No 🙈</button></div>
+<p class="hint" id="hint" aria-live="polite">Psst... there's a right answer. Just saying. 🙂</p></div>
+<div class="art"><div class="artlabel">a date to remember ✦</div><div class="scene"><div class="moon"></div><span class="star s1">✦</span><span class="star s2">✧</span><div class="hills"></div><div class="table"><div class="candle"><i></i></div><span>✿</span></div><div class="caption">just us, tonight</div></div><div class="sticker one">♡ made with love</div><div class="sticker two">your kind of magic ✨</div></div>
+</section>
+<section class="panel form-panel hidden" id="planner">
+<p class="eyebrow center">✦ STEP INTO THE GOOD PART</p><h2>Let's plan <em>our date.</em></h2><p class="sub center">Pick what feels right. The best plans are made together.</p>
+<form id="date-form"><div class="fields">
+<div><label for="date">Date *</label><input id="date" type="date" required></div><div><label for="time">Time *</label><input id="time" type="time" required></div>
+<div class="full"><label for="place">Where should we go? *</label><input id="place" maxlength="100" placeholder="A cozy café, a park, somewhere special..." required></div>
+<div class="full"><label for="activity">Our kind of date</label><select id="activity"><option>☕ Coffee & conversation</option><option>🍝 Dinner for two</option><option>🌅 A sunset walk</option><option>🎬 Movie night</option><option>🌿 A little adventure</option><option>🎁 Your surprise choice</option></select></div>
+<div class="full"><label for="note">A little note <small>(optional)</small></label><textarea id="note" maxlength="240" rows="3" placeholder="Something sweet, silly, or from the heart..."></textarea></div>
+</div><p class="error" id="error" role="alert"></p><div class="buttons spread"><button class="secondary" id="back" type="button">← Back</button><button class="primary" type="submit">Make it official ♡</button></div></form>
+</section>
+<section class="panel result hidden" id="result">
+<div class="success">♡</div><p class="eyebrow center">✦ IT'S A DATE!</p><h2>Something lovely<br>is <em>in the making.</em></h2><p class="sub center">Here's our little plan. Now all that's left is to show up and enjoy it.</p>
+<div class="ticket"><div class="ticket-head"><span>OUR LITTLE PLAN</span><span>NO. 001 ♡</span></div><div class="ticket-body">
+<label>THE WHEN</label><h3 id="out-date"></h3><p id="out-time" class="muted"></p><hr><label>THE WHERE</label><h3 id="out-place"></h3><hr><label>THE VIBE</label><h3 id="out-activity"></h3><div id="note-wrap" class="hidden"><hr><label>A LITTLE NOTE</label><p id="out-note" class="note"></p></div></div><div class="ticket-foot">GOOD COMPANY. GOOD MEMORIES. JUST US. ♡</div></div>
+<p id="status" class="status" aria-live="polite"></p><div class="buttons center buttons-bottom"><button class="primary" id="share">Share our plan ↗</button><button class="secondary" id="copy">Copy details</button></div><div class="links"><button id="edit">Edit our plan</button><span>·</span><button id="restart">Start over</button></div>
+</section>
+</main><footer>Made with <b>♥</b> and a little courage.<small>THE BEST MEMORIES START WITH A YES.</small></footer><div class="toast" id="toast" role="status"></div>
+</body></html>
