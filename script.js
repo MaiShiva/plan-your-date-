@@ -1,425 +1,246 @@
 
-/* A Little Question — JavaScript */
-"use strict";
+const $ = (id) => document.getElementById(id);
 
-const CONFIG = {
-  GOOGLE_SCRIPT_URL: ""
-};
+const welcome = $("welcome");
+const planner = $("planner");
+const success = $("success");
+const yesBtn = $("yesBtn");
+const noBtn = $("noBtn");
+const buttons = $("buttons");
+const form = $("dateForm");
+const toast = $("toast");
 
-const $ = (selector) => document.querySelector(selector);
+let yesScale = 1;
+let noMoves = 0;
+let toastTimer;
 
-const heartsLayer = $("#hearts");
-const yesButton = $("#yes-button");
-const noButton = $("#no-button");
-const choiceArea = $("#choice-area");
-const choiceHint = $("#choice-hint");
-const planPanel = $("#plan-panel");
-const resultPanel = $("#result-panel");
-const dateForm = $("#date-form");
-const formError = $("#form-error");
-const saveButton = $("#save-button");
-const resultCopy = $("#result-copy");
-const shareStatus = $("#share-status");
+const noMessages = [
+  "Are you sure? 🥺",
+  "Ek baar aur soch lo! 💗",
+  "Pleaseee? 🌷",
+  "Maan bhi jao na! 🥹",
+  "Yes kitna cute hai! 💖"
+];
 
-let latestPlan = null;
-let noCount = 0;
-let submitInProgress = false;
+// Aaj se pehle ki date select nahi kar sakte.
+const today = new Date();
+const localToday = [
+  today.getFullYear(),
+  String(today.getMonth() + 1).padStart(2, "0"),
+  String(today.getDate()).padStart(2, "0")
+].join("-");
 
-function localISODate(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+$("date").min = localToday;
 
-const dateInput = $("#date");
-if (dateInput) dateInput.min = localISODate();
+// Floating hearts background.
+const heartContainer = $("hearts");
+const heartSymbols = ["💗", "💕", "♡", "💖", "🌸", "💘"];
 
-function createHeartBurst(count = 18) {
-  if (!heartsLayer) return;
-
-  const symbols = ["♥", "♡", "✦"];
-
-  for (let i = 0; i < count; i++) {
-    const heart = document.createElement("span");
-    heart.className = "floating-heart";
-    heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    heart.style.left = `${Math.random() * 100}%`;
-    heart.style.fontSize = `${14 + Math.random() * 22}px`;
-    heart.style.animationDelay = `${Math.random() * 0.8}s`;
-    heart.style.animationDuration = `${3.4 + Math.random() * 2}s`;
-
-    heartsLayer.appendChild(heart);
-    heart.addEventListener("animationend", () => heart.remove(), {
-      once: true
-    });
-  }
-}
-
-function showPanel(panelToShow) {
-  [choiceArea, planPanel, resultPanel].forEach((panel) => {
-    if (panel) panel.hidden = panel !== panelToShow;
-  });
-}
-
-function showFormError(message) {
-  if (!formError) return;
-  formError.textContent = message;
-  formError.hidden = false;
-}
-
-function clearFormError() {
-  if (!formError) return;
-  formError.textContent = "";
-  formError.hidden = true;
-}
-
-function safeText(value) {
-  return String(value ?? "").trim();
-}
-
-/* YES BUTTON */
-if (yesButton) {
-  yesButton.addEventListener("click", () => {
-    if (!planPanel) {
-      console.error('Element with id="plan-panel" was not found.');
-      return;
-    }
-
-    showPanel(planPanel);
-    createHeartBurst(24);
-
-    const nameInput = $("#person-name");
-    if (nameInput) nameInput.focus({ preventScroll: true });
-
-    planPanel.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  });
-}
-
-/* NO BUTTON */
-
-/* NO BUTTON — RUNAWAY ANIMATION */
-if (noButton) {
-  let dodgeCount = 0;
-
-  noButton.style.transition =
-    "transform 0.35s cubic-bezier(.2,.8,.3,1)";
-
-  noButton.addEventListener("click", () => {
-    dodgeCount++;
-
-    const messages = [
-      "Arey! Pakad ke dikhao 😂💗",
-      "Nahi pakad paoge! 🙈",
-      "Oho, phir se try karo! 😜",
-      "Bhaag gaya button! 😂💕",
-      "Bas bas, ab Yes daba do Miss.DramaQueen! ❤️"
-    ];
-
-    if (choiceHint) {
-      choiceHint.textContent =
-        messages[(dodgeCount - 1) % messages.length];
-    }
-
-    const moveX = (Math.random() < 0.5 ? -1 : 1) *
-      (45 + Math.random() * 65);
-
-    const moveY = (Math.random() < 0.5 ? -1 : 1) *
-      (15 + Math.random() * 25);
-
-    noButton.style.transform =
-      `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 24 - 12}deg)`;
-
-    noButton.animate(
-      [
-        { scale: "1" },
-        { scale: "1.15" },
-        { scale: "0.9" },
-        { scale: "1" }
-      ],
-      {
-        duration: 400,
-        easing: "ease-out"
-      }
-    );
-  });
-}
-
-
-/* BACK BUTTON */
-const backButton = $("#back-button");
-
-if (backButton) {
-  backButton.addEventListener("click", () => {
-    clearFormError();
-    showPanel(choiceArea);
-    if (yesButton) yesButton.focus();
-  });
-}
-
-function getPlanFromForm() {
-  return {
-    personName: safeText($("#person-name")?.value),
-    date: $("#date")?.value || "",
-    time: $("#time")?.value || "",
-    place: safeText($("#place")?.value),
-    note: safeText($("#note")?.value)
-  };
-}
-
-function validatePlan(plan) {
-  if (!plan.personName || !plan.date || !plan.time || !plan.place) {
-    return "Please fill in your name, date, time, and place.";
+function createHeart() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
   }
 
-  if (
-    plan.personName.length > 60 ||
-    plan.place.length > 120 ||
-    plan.note.length > 300
-  ) {
-    return "One of the fields is too long. Please shorten it and try again.";
-  }
+  const heart = document.createElement("span");
+  heart.className = "heart";
+  heart.textContent =
+    heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
 
-  if (plan.date < localISODate()) {
-    return "Please choose today or a future date.";
-  }
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = (14 + Math.random() * 20) + "px";
+  heart.style.animationDuration = (7 + Math.random() * 7) + "s";
 
-  return "";
+  heartContainer.appendChild(heart);
+  heart.addEventListener("animationend", () => heart.remove());
 }
 
-function prettyDate(dateString) {
-  const parsed = new Date(`${dateString}T12:00:00`);
+for (let i = 0; i < 10; i++) {
+  setTimeout(createHeart, i * 250);
+}
 
-  if (Number.isNaN(parsed.getTime())) return dateString;
+setInterval(createHeart, 900);
 
-  return new Intl.DateTimeFormat(undefined, {
-    weekday: "long",
-    year: "numeric",
+// Small notification.
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2600);
+}
+
+// No button ko safe area mein nayi position dena.
+function moveNoButton() {
+  if (noMoves >= 5) {
+    noBtn.textContent = "No 🙈";
+    noBtn.style.display = "none";
+    return;
+  }
+
+  noMoves++;
+
+  const area = buttons.getBoundingClientRect();
+  const btn = noBtn.getBoundingClientRect();
+
+  const maxX = Math.max(0, area.width - btn.width);
+  const maxY = Math.max(0, area.height - btn.height);
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
+
+  yesScale = Math.min(1.65, yesScale + 0.12);
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  noBtn.textContent =
+    noMessages[Math.min(noMoves - 1, noMessages.length - 1)];
+}
+
+// Mouse aur touch interactions.
+noBtn.addEventListener("pointerenter", (event) => {
+  if (event.pointerType === "mouse") {
+    moveNoButton();
+  }
+});
+
+noBtn.addEventListener("pointerdown", (event) => {
+  event.preventDefault();
+  moveNoButton();
+});
+
+// Yes click: planner kholna.
+yesBtn.addEventListener("click", () => {
+  welcome.hidden = true;
+  planner.hidden = false;
+
+  // Form mein naam pehla field hai.
+  $("girlName").focus();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Date ko readable banana.
+function formatDate(value) {
+  const date = new Date(value + "T12:00:00");
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
     month: "long",
-    day: "numeric"
-  }).format(parsed);
+    year: "numeric"
+  }).format(date);
 }
 
-function prettyTime(timeString) {
-  const [hours, minutes] = timeString.split(":").map(Number);
-  const parsed = new Date();
+function formatTime(value) {
+  const [hours, minutes] = value.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
 
-  parsed.setHours(hours, minutes, 0, 0);
-
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat("en-IN", {
     hour: "numeric",
     minute: "2-digit"
-  }).format(parsed);
+  }).format(date);
 }
 
-function renderPlan(plan) {
-  const lines = [
-    `For: ${plan.personName}`,
-    `When: ${prettyDate(plan.date)} at ${prettyTime(plan.time)}`,
-    `Where: ${plan.place}`
-  ];
+// Final plan create karna.
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-  if (plan.note) lines.push(`Note: ${plan.note}`);
+  if (!form.reportValidity()) return;
 
-  if (resultCopy) {
-    resultCopy.textContent = lines.join("\n");
-  }
-}
+  const selectedDate = $("date").value;
 
-async function sendToGoogleSheets(plan) {
-  if (!CONFIG.GOOGLE_SCRIPT_URL) {
-    return { configured: false };
+  if (selectedDate < localToday) {
+    showToast("Please choose today or a future date. 💗");
+    return;
   }
 
-  const payload = new URLSearchParams({
-    personName: plan.personName,
-    date: plan.date,
-    time: plan.time,
-    place: plan.place,
-    note: plan.note,
-    submittedAt: new Date().toISOString()
-  });
+  const name = $("girlName").value.trim();
+  const place = $("place").value.trim();
+  const note = $("message").value.trim();
+  const date = $("date").value;
+  const time = $("time").value;
 
-  await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: payload
-  });
+  if (!name || !place || !date || !time) {
+    showToast("Please complete all required fields. 💌");
+    return;
+  }
 
-  return { configured: true };
-}
+  $("outName").textContent = name;
+  $("outDate").textContent = formatDate(date);
+  $("outPlace").textContent = place;
+  $("outTime").textContent = formatTime(time);
 
-/* DATE FORM SUBMISSION */
-if (dateForm) {
-  dateForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+  $("successTitle").textContent = `Yay, ${name}! 💗`;
 
-    if (submitInProgress) return;
+  $("noteRow").hidden = !note;
+  $("outNote").textContent = note;
 
-    clearFormError();
+  planner.hidden = true;
+  success.hidden = false;
 
-    const plan = getPlanFromForm();
-    const error = validatePlan(plan);
+  // Celebration hearts.
+  for (let i = 0; i < 16; i++) {
+    setTimeout(createHeart, i * 100);
+  }
 
-    if (error) {
-      showFormError(error);
-      return;
-    }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  showToast("Your date plan is ready! 💖");
+});
 
-    submitInProgress = true;
+// Details edit karne ke liye.
+$("editBtn").addEventListener("click", () => {
+  success.hidden = true;
+  planner.hidden = false;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
-    if (saveButton) {
-      saveButton.disabled = true;
-      saveButton.classList.add("is-loading");
-      saveButton.textContent = "Saving…";
-    }
+// Plan ko share karna.
+$("shareBtn").addEventListener("click", async () => {
+  const name = $("outName").textContent;
+  const date = $("outDate").textContent;
+  const place = $("outPlace").textContent;
+  const time = $("outTime").textContent;
+  const note = $("outNote").textContent;
 
+  let message =
+    `💗 Our Date Plan 💗\n\n` +
+    `Name: ${name}\n` +
+    `Date: ${date}\n` +
+    `Place: ${place}\n` +
+    `Time: ${time}`;
+
+  if (!$("noteRow").hidden && note) {
+    message += `\nNote: ${note}`;
+  }
+
+  message += "\n\nLet's make a lovely memory! 🌷";
+
+  if (navigator.share) {
     try {
-      const result = await sendToGoogleSheets(plan);
-
-      latestPlan = plan;
-      renderPlan(plan);
-      showPanel(resultPanel);
-      createHeartBurst(28);
-
-      if (shareStatus) {
-        shareStatus.textContent = result.configured
-          ? "Request sent. Check your spreadsheet to confirm it was saved."
-          : "Your date plan is displayed here. Remote saving is not configured.";
-      }
-
-      if (resultPanel) {
-        resultPanel.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest"
-        });
-      }
+      await navigator.share({
+        title: "Our Date Plan 💗",
+        text: message
+      });
     } catch (error) {
-      console.error("Could not send the plan:", error);
-
-      showFormError(
-        "Couldn't send the plan. Check your connection and try again."
-      );
-    } finally {
-      submitInProgress = false;
-
-      if (saveButton) {
-        saveButton.disabled = false;
-        saveButton.classList.remove("is-loading");
-        saveButton.innerHTML =
-          'Save our plan <span aria-hidden="true">♡</span>';
+      if (error.name !== "AbortError") {
+        copyPlan(message);
       }
     }
-  });
-}
-
-/* EDIT PLAN */
-const editButton = $("#edit-button");
-
-if (editButton) {
-  editButton.addEventListener("click", () => {
-    showPanel(planPanel);
-
-    if (shareStatus) shareStatus.textContent = "";
-
-    const nameInput = $("#person-name");
-    if (nameInput) nameInput.focus({ preventScroll: true });
-  });
-}
-
-/* RESTART */
-const restartButton = $("#restart-button");
-
-if (restartButton) {
-  restartButton.addEventListener("click", () => {
-    latestPlan = null;
-
-    if (dateForm) dateForm.reset();
-    if (dateInput) dateInput.min = localISODate();
-
-    clearFormError();
-
-    if (shareStatus) shareStatus.textContent = "";
-
-    showPanel(choiceArea);
-
-    if (choiceHint) {
-      choiceHint.textContent =
-        "No pressure — choose whatever feels right. 💗";
-    }
-
-    if (yesButton) yesButton.focus();
-  });
-}
-
-/* SHARE PLAN */
-const shareButton = $("#share-button");
-
-if (shareButton) {
-  shareButton.addEventListener("click", async () => {
-    if (!latestPlan) return;
-
-    const text = [
-      "Our little date plan 💗",
-      `For: ${latestPlan.personName}`,
-      `When: ${prettyDate(latestPlan.date)} at ${prettyTime(latestPlan.time)}`,
-      `Where: ${latestPlan.place}`,
-      latestPlan.note ? `Note: ${latestPlan.note}` : ""
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: "Our little date plan 💗",
-          text
-        });
-
-        if (shareStatus) {
-          shareStatus.textContent = "Share sheet opened.";
-        }
-        return;
-      }
-
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-
-        if (shareStatus) {
-          shareStatus.textContent =
-            "Plan copied! Paste it into a message.";
-        }
-        return;
-      }
-
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      const copied = document.execCommand("copy");
-      textarea.remove();
-
-      if (shareStatus) {
-        shareStatus.textContent = copied
-          ? "Plan copied! Paste it into a message."
-          : "Please copy the plan text manually.";
-      }
-    } catch (error) {
-      if (shareStatus) {
-        shareStatus.textContent =
-          error?.name === "AbortError"
-            ? "Sharing cancelled."
-            : "Couldn't open sharing. Please try again.";
-      }
-    }
-  });
+  } else {
+    copyPlan(message);
   }
-    
+});
+
+async function copyPlan(message) {
+  try {
+    await navigator.clipboard.writeText(message);
+    showToast("Plan copied! You can paste it into WhatsApp. 💌");
+  } catch {
+    // Fallback for browsers without clipboard support.
+    const url =
+      "https://wa.me/?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+}
