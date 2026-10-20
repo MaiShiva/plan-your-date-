@@ -4,213 +4,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fff7f8">
-  <meta name="description" content="A little invitation to make a beautiful memory together. Plan your perfect date.">
-  <title>Plan Your Date ♡</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <meta name="theme-color" content="#fff0f5">
+  <meta name="description" content="A little romantic date invitation made with love.">
+  <title>A Little Date With You 💗</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js" defer></script>
 </head>
-
 <body>
-  <div class="ambient ambient-one" aria-hidden="true"></div>
-  <div class="ambient ambient-two" aria-hidden="true"></div>
 
-  <header class="site-header">
-    <a class="brand" href="#" aria-label="Plan Your Date home">
-      <span class="brand-icon">♡</span>
-      <span>date<span class="brand-light">night</span></span>
-    </a>
-    <span class="header-note"><span class="status-dot"></span> A little moment for us</span>
-  </header>
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
 
-  <main class="page-shell">
-    <section class="hero panel" id="welcome-panel">
-      <div class="hero-copy">
-        <p class="eyebrow"><span>✦</span> YOUR INVITATION AWAITS</p>
+  <main class="card">
+    <div class="top-heart">💌</div>
+    <p class="eyebrow">A LITTLE QUESTION FOR YOU</p>
 
-        <h1>Life is better<br>when it's <span>you & me.</span></h1>
+    <section id="welcome">
+      <div class="sticker">🥹💗</div>
+      <h1>Hey Beautiful!</h1>
+      <p class="subtitle">
+        I have a tiny question for you...
+      </p>
+      <h2>Will you go on a date with me? 🌷</h2>
 
-        <p class="hero-description">
-          No big plans. No pressure. Just good vibes, a little adventure,
-          and some time together.
-        </p>
-
-        <div class="question-card">
-          <span class="question-heart" aria-hidden="true">♡</span>
-          <div>
-            <p class="question-title">So, what do you say?</p>
-            <p class="question-subtitle">Will you go on a date with me?</p>
-          </div>
-        </div>
-
-        <div class="button-area">
-          <button class="button button-primary" id="yes-button" type="button">
-            Yes, let's go <span aria-hidden="true">♡</span>
-          </button>
-
-          <button class="button button-secondary" id="no-button" type="button">
-            No 🙈
-          </button>
-        </div>
-
-        <p class="hint" id="choice-hint" aria-live="polite">
-          Psst... there's a right answer. Just saying. 🙂
-        </p>
+      <div class="buttons" id="buttons">
+        <button id="yesBtn" class="btn yes" type="button">
+          Yes, of course! 💖
+        </button>
+        <button id="noBtn" class="btn no" type="button">
+          No 🙈
+        </button>
       </div>
 
-      <div class="hero-art" aria-label="Romantic date illustration">
-        <div class="art-glow"></div>
-        <div class="art-label art-label-top">a date to remember ✦</div>
-
-        <div class="photo-frame">
-          <div class="photo-scene">
-            <div class="moon"></div>
-            <div class="star star-one">✦</div>
-            <div class="star star-two">✧</div>
-            <div class="star star-three">·</div>
-            <div class="hill hill-back"></div>
-            <div class="hill hill-front"></div>
-            <div class="table">
-              <div class="table-top"></div>
-              <div class="table-leg"></div>
-              <div class="candle">
-                <span class="flame"></span>
-              </div>
-              <div class="flower">✿</div>
-            </div>
-            <div class="scene-caption">just us, tonight</div>
-          </div>
-        </div>
-
-        <div class="floating-note note-one">♡ made with love</div>
-        <div class="floating-note note-two">your kind of magic ✨</div>
-        <div class="art-label art-label-bottom">ONE LITTLE YES, A LOT OF MEMORIES</div>
-      </div>
+      <p class="tiny">Choose wisely, cutie! 🫶</p>
     </section>
 
-    <section class="planner panel hidden" id="plan-panel">
-      <div class="section-heading">
-        <p class="eyebrow"><span>✦</span> STEP INTO THE GOOD PART</p>
-        <h2>Let's plan <span>our date.</span></h2>
-        <p>Pick what feels right. The best plans are the ones we make together.</p>
-      </div>
+    <section id="planner" hidden>
+      <div class="sticker">🌹</div>
+      <h1>It's a date!</h1>
+      <p class="subtitle">
+        Let's plan our little adventure together.
+      </p>
 
-      <form id="date-form">
-        <div class="form-grid">
-          <div class="field">
-            <label for="date-input">Date <span>*</span></label>
-            <input type="date" id="date-input" name="date" required>
-          </div>
+      <form id="dateForm">
+        <label for="girlName">What should I call you? 💕</label>
+        <input
+          id="girlName"
+          name="girlName"
+          type="text"
+          placeholder="Your lovely name"
+          maxlength="60"
+          autocomplete="given-name"
+          required
+        >
 
-          <div class="field">
-            <label for="time-input">Time <span>*</span></label>
-            <input type="time" id="time-input" name="time" required>
-          </div>
+        <label for="date">Which day works for you? 📅</label>
+        <input id="date" name="date" type="date" required>
 
-          <div class="field field-full">
-            <label for="location-input">Where should we go? <span>*</span></label>
-            <input type="text" id="location-input" name="location"
-              placeholder="A cozy café, a park, somewhere special..." maxlength="100" required>
-          </div>
+        <label for="place">Where shall we go? 📍</label>
+        <input
+          id="place"
+          name="place"
+          type="text"
+          placeholder="A cute cafe, park, or somewhere else..."
+          maxlength="160"
+          required
+        >
 
-          <div class="field field-full">
-            <label for="activity-input">Our kind of date</label>
-            <select id="activity-input" name="activity">
-              <option value="Coffee & conversation">☕ Coffee & conversation</option>
-              <option value="Dinner for two">🍝 Dinner for two</option>
-              <option value="A sunset walk">🌅 A sunset walk</option>
-              <option value="Movie night">🎬 Movie night</option>
-              <option value="A little adventure">🌿 A little adventure</option>
-              <option value="Your surprise choice">🎁 Your surprise choice</option>
-            </select>
-          </div>
+        <label for="time">What time suits you? ⏰</label>
+        <input id="time" name="time" type="time" required>
 
-          <div class="field field-full">
-            <label for="message-input">A little note <span class="optional">(optional)</span></label>
-            <textarea id="message-input" name="message" rows="3" maxlength="240"
-              placeholder="Something sweet, silly, or just from the heart..."></textarea>
-            <p class="field-footnote">Up to 240 characters</p>
-          </div>
-        </div>
+        <label for="message">A little note (optional) 💌</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="3"
+          maxlength="250"
+          placeholder="Anything you'd like me to know..."
+        ></textarea>
 
-        <p class="form-error" id="form-error" role="alert"></p>
-
-        <div class="form-actions">
-          <button class="button button-secondary" id="back-button" type="button">
-            ← Back
-          </button>
-          <button class="button button-primary" id="save-button" type="submit">
-            Make it official <span aria-hidden="true">♡</span>
-          </button>
-        </div>
+        <button class="btn yes confirm" type="submit">
+          Make Our Date Plan 💞
+        </button>
       </form>
     </section>
 
-    <section class="result panel hidden" id="result-panel">
-      <div class="result-top">
-        <div class="success-icon" aria-hidden="true">♡</div>
-        <p class="eyebrow"><span>✦</span> IT'S A DATE!</p>
-        <h2>Something lovely<br>is <span>in the making.</span></h2>
-        <p class="result-intro">Here's our little plan. Now all that's left is to show up and enjoy it.</p>
+    <section id="success" hidden aria-live="polite">
+      <div class="sticker celebration">🥰</div>
+      <h1 id="successTitle">Yay! 💗</h1>
+      <p class="subtitle">
+        A little plan, a lovely memory waiting to happen.
+      </p>
+
+      <div class="summary">
+        <p>💖 <strong>Name:</strong> <span id="outName"></span></p>
+        <p>📅 <strong>Date:</strong> <span id="outDate"></span></p>
+        <p>📍 <strong>Place:</strong> <span id="outPlace"></span></p>
+        <p>⏰ <strong>Time:</strong> <span id="outTime"></span></p>
+        <p id="noteRow" hidden>💌 <strong>Note:</strong> <span id="outNote"></span></p>
       </div>
 
-      <div class="date-ticket" id="date-ticket">
-        <div class="ticket-header">
-          <span>OUR LITTLE PLAN</span>
-          <span>NO. 001 ♡</span>
-        </div>
-        <div class="ticket-main">
-          <p class="ticket-label">THE WHEN</p>
-          <p class="ticket-value" id="result-date">Your chosen date</p>
-          <p class="ticket-time" id="result-time">Your chosen time</p>
+      <button class="btn yes" id="shareBtn" type="button">
+        Share Our Plan 💌
+      </button>
+      <button class="btn secondary" id="editBtn" type="button">
+        Edit the details ✨
+      </button>
 
-          <div class="ticket-divider"><span>♡</span></div>
-
-          <p class="ticket-label">THE WHERE</p>
-          <p class="ticket-value" id="result-location">Somewhere special</p>
-
-          <div class="ticket-divider"><span>♡</span></div>
-
-          <p class="ticket-label">THE VIBE</p>
-          <p class="ticket-value" id="result-activity">Coffee & conversation</p>
-
-          <div class="personal-note hidden" id="personal-note-wrap">
-            <p class="ticket-label">A LITTLE NOTE</p>
-            <p class="personal-note-text" id="result-message"></p>
-          </div>
-        </div>
-        <div class="ticket-footer">GOOD COMPANY. GOOD MEMORIES. JUST US. ♡</div>
-      </div>
-
-      <p class="share-status" id="share-status" aria-live="polite"></p>
-
-      <div class="result-actions">
-        <button class="button button-primary" id="share-button" type="button">
-          Share our plan ↗
-        </button>
-        <button class="button button-secondary" id="copy-button" type="button">
-          Copy details
-        </button>
-      </div>
-
-      <div class="result-links">
-        <button class="text-button" id="edit-button" type="button">Edit our plan</button>
-        <span>·</span>
-        <button class="text-button" id="restart-button" type="button">Start over</button>
-      </div>
+      <p class="tiny">
+        A plan made with love. Please confirm the details together. 💗
+      </p>
     </section>
 
-    <footer class="site-footer">
-      <p>Made with <span>♥</span> and a little courage.</p>
-      <p class="footer-small">THE BEST MEMORIES START WITH A YES.</p>
-    </footer>
+    <p class="footer">made with ♡ just for you</p>
   </main>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 </body>
 </html>
